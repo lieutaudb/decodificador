@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criptografia</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <textarea id="originalTxt" placeholder="Insira o texto"></textarea>
+        <div id="resultado"><textarea id="restxt" placeholder=""></textarea></div>
+        <div id="aviso">Apenas letras minúsculas e sem acento</div>
+
+        <div class="botoes">
+            <button onclick="criptografar()">Criptografar</button>
+            <button onclick="descriptografar()">Descriptografar</button>
+            <button onclick="copiar()">Copiar</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>Eduarda Lieutaud, 2024</p>
+    </footer>
+
+    <script>
+        function criptografar() {
+            const textoOriginal = document.getElementById('originalTxt').value;
+            const textoCriptografado = substituirCaracteres(textoOriginal, true);
+            document.getElementById('restxt').value = textoCriptografado;
+        }
+        
+        function descriptografar() {
+            const textoCriptografado = document.getElementById('originalTxt').value;
+            const textoDescriptografado = substituirCaracteres(textoCriptografado, false);
+            document.getElementById('restxt').value = textoDescriptografado;
+        }
+
+        function copiar() {
+            const textoCriptografado = document.getElementById('restxt');
+            textoCriptografado.select();
+            document.execCommand('copy');
+            window.getSelection().removeAllRanges();
+            textoCriptografado.value = '';
+        }
+
+        function substituirCaracteres(texto, criptografar) {
+            const tabelaSubstituicao = {
+                'a': 'ai',
+                'e': 'enter',
+                'i': 'imes',
+                'o': 'ober',
+                'u': 'ufat',
+            };
+
+            const resultado = texto.split('').map(char => {
+                const lowercaseChar = char.toLowerCase();
+                if (criptografar) {
+                    return tabelaSubstituicao[lowercaseChar] || char;
+                } else {
+                    return Object.values(tabelaSubstituicao).includes(lowercaseChar) ? Object.keys(tabelaSubstituicao).find(key => tabelaSubstituicao[key] === lowercaseChar) : char;
+                }
+            }).join('');
+
+            return resultado;
+        }
+    </script>
+</body>
+</html>
